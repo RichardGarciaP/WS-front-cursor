@@ -1,5 +1,5 @@
 import throttle from "lodash.throttle";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import useWebSocket from "react-use-websocket";
 
 const Home = ({ username }) => {
@@ -10,7 +10,7 @@ const Home = ({ username }) => {
   });
 
   const THROTTLE = 1000; // 1s;
-  const sendJsonMessageThrottled = throttle(sendJsonMessage, THROTTLE);
+  const sendJsonMessageThrottled = useRef(throttle(sendJsonMessage, THROTTLE));
 
   useEffect(() => {
     window.addEventListener("mousemove", (e) => {
@@ -18,7 +18,7 @@ const Home = ({ username }) => {
     });
 
     return () => {
-      window.removeEventListener("mousemove");
+      window.removeEventListener("mousemove", () => {});
     };
   }, []);
 
